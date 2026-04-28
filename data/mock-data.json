@@ -1,0 +1,115 @@
+{
+  "landing": {
+    "navLinks": [
+      { "href": "#features", "label": "Features" },
+      { "href": "#how-it-works", "label": "How It Works" },
+      { "href": "#impact", "label": "Impact" },
+      { "href": "#testimonials", "label": "Testimonials" }
+    ],
+    "features": [
+      { "title": "Food Posting", "description": "List surplus food in seconds with our smart form. Add photos, quantities, and pickup times effortlessly.", "color": "primary", "span": "lg:col-span-2" },
+      { "title": "GPS Matching", "description": "AI-powered matching connects donors with the nearest receivers for faster pickups.", "color": "secondary", "span": "" },
+      { "title": "Pickup Scheduling", "description": "Flexible scheduling lets you choose convenient pickup windows.", "color": "accent", "span": "" },
+      { "title": "Ratings & Reviews", "description": "Build trust with verified ratings. Top donors get recognition badges.", "color": "primary", "span": "" },
+      { "title": "Admin Security", "description": "Robust verification ensures only legitimate NGOs and individuals receive food.", "color": "secondary", "span": "" },
+      { "title": "Smart Notifications", "description": "Real-time alerts for new donations, pickup confirmations, and delivery updates.", "color": "accent", "span": "lg:col-span-2" }
+    ],
+    "testimonials": [
+      { "name": "Sarah Chen", "role": "Restaurant Owner", "avatar": "SC", "rating": 5, "verified": true, "content": "FoodBridge has transformed how we handle surplus food. Instead of throwing away perfectly good meals, we now help feed families in need. The pickup coordination is seamless." },
+      { "name": "Michael Rodriguez", "role": "NGO Director", "avatar": "MR", "rating": 5, "verified": true, "content": "As an NGO, finding reliable food sources was always a challenge. FoodBridge connects us with donors in real-time, and the GPS matching saves us hours every day." },
+      { "name": "Priya Patel", "role": "Supermarket Manager", "avatar": "PP", "rating": 5, "verified": true, "content": "We've reduced our food waste by 85% since joining FoodBridge. The platform is incredibly easy to use, and knowing our surplus feeds people instead of landfills is amazing." }
+    ]
+    ,
+    "impact": {
+      "stats": [
+        { "value": 2500000, "suffix": "+", "label": "Meals Saved" },
+        { "value": 850, "suffix": "+", "label": "Active NGOs" },
+        { "value": 95, "suffix": "%", "label": "Waste Reduced" },
+        { "value": 120, "suffix": "+", "label": "Cities Covered" }
+      ]
+    }
+  },
+  "donor": {
+    "stats": [
+      { "label": "Total Donations", "value": 127 },
+      { "label": "Pending Pickups", "value": 8 },
+      { "label": "Completed", "value": 119 },
+      { "label": "Impact Score", "value": 94 }
+    ],
+    "recentRequests": [
+      { "id": 1, "receiver": "Community Food Bank", "food": "Fresh Vegetables", "quantity": "15 kg", "time": "10 min ago", "status": "pending" },
+      { "id": 2, "receiver": "Hope Shelter", "food": "Bread & Pastries", "quantity": "20 items", "time": "25 min ago", "status": "pending" }
+    ],
+    "nearbyReceivers": [
+      { "name": "Community Food Bank", "distance": "1.2 km", "verified": true },
+      { "name": "Hope Shelter", "distance": "2.5 km", "verified": true }
+    ],
+    "donations": [
+      { "id": "D-2041", "item": "Fresh Vegetables", "status": "Scheduled", "impact": "38 meals" },
+      { "id": "D-2038", "item": "Bread & Pastries", "status": "Completed", "impact": "24 meals" }
+    ],
+    "requests": [
+      { "org": "Community Food Bank", "food": "Fresh Vegetables", "status": "Pending", "time": "10 min ago" }
+    ],
+    "messages": [
+      { "sender": "Community Food Bank", "preview": "Pickup confirmed for 4:30 PM.", "unread": true }
+    ],
+    "analytics": [
+      { "label": "Meals saved", "value": "2,450" },
+      { "label": "Pickup success", "value": "96%" },
+      { "label": "Repeat partners", "value": "14" }
+    ],
+    "settings": ["Donation reminders", "Pickup notifications", "Weekly impact summary"]
+  },
+  "receiver": {
+    "stats": [
+      { "label": "Nearby Donations", "value": 23 },
+      { "label": "My Requests", "value": 5 },
+      { "label": "Approved Pickups", "value": 3 },
+      { "label": "Completed", "value": 47 }
+    ],
+    "nearbyDonations": [
+      { "id": 1, "foodName": "Fresh Vegetable Mix", "donor": "Green Restaurant", "donorRating": 4.9, "quantity": "15 kg", "category": "Fresh Produce", "distance": "0.8 km", "expiresIn": "4 hours", "verified": true }
+    ],
+    "categories": ["All", "Fresh Produce", "Cooked Meals", "Bakery Items", "Dairy", "Packaged Food"]
+  },
+  "admin": {
+    "stats": [
+      { "label": "Active Donations", "value": 1893 },
+      { "label": "Total Users", "value": 10234 }
+    ],
+    "pendingNGOs": [ { "id": 1, "name": "Hope Local" } ],
+    "recentUsers": [ { "id": 1, "name": "Jane Doe" } ],
+    "recentReports": [ { "id": 1, "title": "Pickup delay" } ]
+  },
+  "post": {
+    "categories": [
+      { "id": "fresh", "label": "Fresh Produce", "icon": "🥗" },
+      { "id": "cooked", "label": "Cooked Meals", "icon": "🍲" },
+      { "id": "bakery", "label": "Bakery Items", "icon": "🍞" },
+      { "id": "dairy", "label": "Dairy", "icon": "🥛" },
+      { "id": "packaged", "label": "Packaged Food", "icon": "📦" }
+    ],
+    "steps": [
+      { "id": 1, "label": "Food Details" },
+      { "id": 2, "label": "Location & Time" },
+      { "id": 3, "label": "Review" }
+    ]
+  },
+  "tracking": {
+    "trackingSteps": [
+      { "id": 1, "label": "Donation Posted", "time": "10:30 AM", "completed": true },
+      { "id": 2, "label": "Request Accepted", "time": "10:45 AM", "completed": true },
+      { "id": 3, "label": "Pickup Started", "time": "11:00 AM", "completed": true },
+      { "id": 4, "label": "In Transit", "time": "11:15 AM", "completed": false, "current": true },
+      { "id": 5, "label": "Delivered", "time": "--:--", "completed": false }
+    ]
+  },
+  "auth": {
+    "roles": [
+      { "id": "donor", "label": "Donor", "description": "Restaurant, supermarket, or individual donating food" },
+      { "id": "receiver", "label": "Receiver", "description": "NGO or verified individual receiving food" },
+      { "id": "admin", "label": "Admin", "description": "Platform administrator (requires approval)" }
+    ]
+  }
+}

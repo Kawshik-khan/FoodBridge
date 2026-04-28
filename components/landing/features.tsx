@@ -1,5 +1,7 @@
 "use client"
 
+import { useMemo } from "react"
+import Image from "next/image"
 import { 
   Utensils, 
   MapPin, 
@@ -8,53 +10,29 @@ import {
   Shield, 
   Bell 
 } from "lucide-react"
+import useRemote from "@/hooks/use-remote"
 
-const features = [
-  {
-    icon: Utensils,
-    title: "Food Posting",
-    description: "List surplus food in seconds with our smart form. Add photos, quantities, and pickup times effortlessly.",
-    color: "primary",
-    span: "lg:col-span-2",
-  },
-  {
-    icon: MapPin,
-    title: "GPS Matching",
-    description: "AI-powered matching connects donors with the nearest receivers for faster pickups.",
-    color: "secondary",
-    span: "",
-  },
-  {
-    icon: Calendar,
-    title: "Pickup Scheduling",
-    description: "Flexible scheduling lets you choose convenient pickup windows.",
-    color: "accent",
-    span: "",
-  },
-  {
-    icon: Star,
-    title: "Ratings & Reviews",
-    description: "Build trust with verified ratings. Top donors get recognition badges.",
-    color: "primary",
-    span: "",
-  },
-  {
-    icon: Shield,
-    title: "Admin Security",
-    description: "Robust verification ensures only legitimate NGOs and individuals receive food.",
-    color: "secondary",
-    span: "",
-  },
-  {
-    icon: Bell,
-    title: "Smart Notifications",
-    description: "Real-time alerts for new donations, pickup confirmations, and delivery updates.",
-    color: "accent",
-    span: "lg:col-span-2",
-  },
-]
+const iconMap: Record<string, any> = {
+  "Food Posting": Utensils,
+  "GPS Matching": MapPin,
+  "Pickup Scheduling": Calendar,
+  "Ratings & Reviews": Star,
+  "Admin Security": Shield,
+  "Smart Notifications": Bell,
+}
+
+const imageMap: Record<string, string> = {
+  "Food Posting": "/Donet.png",
+  "Donate": "/Donet.png",
+  "Pickup Scheduling": "/Delivery.png",
+  "Delivery": "/Delivery.png",
+  "Admin Security": "/NGO.png",
+  "NGO": "/NGO.png",
+}
 
 export function Features() {
+  const { data: features = [] } = useRemote('landing.features', [])
+
   return (
     <section id="features" className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -75,8 +53,9 @@ export function Features() {
 
         {/* Features Bento Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
+          {features.map((feature: any, index: number) => {
+            const Icon = iconMap[feature.title] || Utensils
+            const imageSrc = imageMap[feature.title]
             const colorClasses = {
               primary: "bg-primary/20 text-primary",
               secondary: "bg-secondary/20 text-secondary",
@@ -85,8 +64,8 @@ export function Features() {
             
             return (
               <div
-                key={feature.title}
-                className={`bento-card glass-card rounded-3xl p-6 ${feature.span}`}
+                key={`${feature.title}-${index}`}
+                className={`bento-card glass-card rounded-3xl p-6 ${feature.span || ''}`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={`mb-4 inline-flex rounded-2xl p-3 ${colorClasses[feature.color as keyof typeof colorClasses]}`}>
@@ -98,6 +77,18 @@ export function Features() {
                 <p className="text-muted-foreground">
                   {feature.description}
                 </p>
+                {imageSrc && (
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-background/40">
+                    <Image
+                      src={imageSrc}
+                      alt={feature.title}
+                      width={800}
+                      height={450}
+                      className="h-40 w-full object-cover"
+                      priority={feature.title === "Food Posting"}
+                    />
+                  </div>
+                )}
               </div>
             )
           })}

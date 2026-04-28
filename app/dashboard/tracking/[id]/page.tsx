@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import useRemote from "@/hooks/use-remote"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { 
@@ -16,16 +17,12 @@ import {
   Navigation
 } from "lucide-react"
 
-const trackingSteps = [
-  { id: 1, label: "Donation Posted", time: "10:30 AM", completed: true },
-  { id: 2, label: "Request Accepted", time: "10:45 AM", completed: true },
-  { id: 3, label: "Pickup Started", time: "11:00 AM", completed: true },
-  { id: 4, label: "In Transit", time: "11:15 AM", completed: false, current: true },
-  { id: 5, label: "Delivered", time: "--:--", completed: false },
-]
-
 export default function LiveTrackingPage() {
+  const { data: trackingSteps = [] } = useRemote('tracking.trackingSteps', [])
+
   const [eta, setEta] = useState(12)
+
+  
 
   useEffect(() => {
     const timer = setInterval(() => {

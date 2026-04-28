@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import useRemote from "@/hooks/use-remote"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
@@ -17,12 +18,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const navLinks = [
-    { href: "#features", label: "Features" },
-    { href: "#how-it-works", label: "How It Works" },
-    { href: "#impact", label: "Impact" },
-    { href: "#testimonials", label: "Testimonials" },
-  ]
+  const { data: navLinks = [] } = useRemote('landing.navLinks', [])
 
   return (
     <nav

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, MapPin, Heart, Truck, Users } from "lucide-react"
 
@@ -57,54 +58,73 @@ export function Hero() {
         <div className="grid gap-4 lg:grid-cols-3 lg:grid-rows-2">
           {/* Main Hero Card */}
           <div className="bento-card glass-card rounded-3xl p-8 lg:col-span-2 lg:row-span-2 lg:p-12">
-            <div className="flex h-full flex-col justify-between">
-              <div>
-                <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
-                  Share Food.
-                  <br />
-                  <span className="gradient-text">Save Lives.</span>
-                </h1>
-                <p className="mb-8 max-w-xl text-lg text-muted-foreground text-pretty">
-                  Connect surplus food from restaurants, supermarkets, and households with NGOs 
-                  and verified individuals who need it most. Reduce waste, fight hunger.
-                </p>
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <Button size="lg" asChild className="glow-primary group">
-                    <Link href="/register?role=donor">
-                      Donate Food
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                  <Button size="lg" variant="outline" asChild>
-                    <Link href="/register?role=receiver">
-                      Request Help
-                    </Link>
-                  </Button>
-                </div>
-              </div>
+            <div className="relative h-full flex flex-col justify-between">
+              <div className="relative">
+                <div className="flex flex-col md:flex-row md:items-center md:gap-8">
+                  {/* Left: Text content */}
+                  <div className="md:w-1/2">
+                    <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
+                      Share Food.
+                      <br />
+                      <span className="gradient-text">Save Lives.</span>
+                    </h1>
+                    <p className="mb-8 text-lg text-muted-foreground text-pretty">
+                      Connect surplus food from restaurants, supermarkets, and households with NGOs 
+                      and verified individuals who need it most. Reduce waste, fight hunger.
+                    </p>
+                    <div className="flex flex-col gap-4 sm:flex-row">
+                      <Button size="lg" asChild className="glow-primary group">
+                        <Link href="/register?role=donor">
+                          Donate Food
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </Button>
+                      <Button size="lg" variant="outline" asChild>
+                        <Link href="/register?role=receiver">
+                          Request Help
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
 
-              {/* Trust Badges */}
-              <div className="mt-12 flex flex-wrap items-center gap-6 border-t border-border/50 pt-8">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="h-8 w-8 rounded-full border-2 border-background bg-muted"
+                  {/* Right: Illustration */}
+                  <div className="md:w-1/2 mt-8 md:mt-0 flex items-center justify-center">
+                    <div className="w-full max-w-md">
+                      <Image
+                        src="/Donet.png"
+                        alt="Donate illustration"
+                        width={700}
+                        height={560}
+                        className="w-full h-auto object-contain"
+                        priority
                       />
-                    ))}
+                    </div>
                   </div>
-                  <span>Trusted by <strong className="text-foreground">10,000+</strong> donors</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1 text-accent">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
+
+                {/* Trust Badges - moved inside relative block but below content */}
+                <div className="mt-10 md:mt-12 flex flex-wrap items-center gap-6 border-t border-border/50 pt-8">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div
+                          key={i}
+                          className="h-8 w-8 rounded-full border-2 border-background bg-muted"
+                        />
+                      ))}
+                    </div>
+                    <span>Trusted by <strong className="text-foreground">10,000+</strong> donors</span>
                   </div>
-                  <span>4.9/5 rating</span>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1 text-accent">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span>4.9/5 rating</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -119,6 +139,15 @@ export function Hero() {
               <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-primary">
                 Live
               </span>
+            </div>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-background/30">
+              <Image
+                src="/Delivery.png"
+                alt="Delivery"
+                width={800}
+                height={450}
+                className="h-28 w-full object-cover"
+              />
             </div>
             <div className="mt-4">
               <p className="text-sm text-muted-foreground">Donations Today</p>
@@ -142,6 +171,15 @@ export function Hero() {
                   />
                 ))}
               </div>
+            </div>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-background/30">
+              <Image
+                src="/NGO.png"
+                alt="NGO"
+                width={800}
+                height={450}
+                className="h-28 w-full object-cover"
+              />
             </div>
             <div className="mt-4">
               <p className="text-sm text-muted-foreground">Active NGOs Nearby</p>

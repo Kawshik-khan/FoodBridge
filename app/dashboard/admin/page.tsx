@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import useRemote from "@/hooks/use-remote"
 import { Button } from "@/components/ui/button"
 import { 
   Users, 
@@ -42,35 +43,12 @@ function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: strin
   return <span>{count.toLocaleString()}{suffix}</span>
 }
 
-const stats = [
-  { label: "Total Users", value: 12847, icon: Users, color: "primary", change: "+12%", trend: "up" },
-  { label: "Pending NGO Verifications", value: 23, icon: Building2, color: "accent", change: "+5", trend: "up" },
-  { label: "Active Donations", value: 1893, icon: Package, color: "secondary", change: "+8%", trend: "up" },
-  { label: "Abuse Reports", value: 7, icon: AlertTriangle, color: "destructive", change: "-3", trend: "down" },
-]
-
-const pendingNGOs = [
-  { id: 1, name: "Community Food Bank", email: "contact@cfb.org", submitted: "2 hours ago", documents: 3, status: "pending" },
-  { id: 2, name: "Hope Shelter Foundation", email: "info@hopeshelter.org", submitted: "5 hours ago", documents: 4, status: "pending" },
-  { id: 3, name: "City Mission Network", email: "admin@citymission.org", submitted: "1 day ago", documents: 2, status: "review" },
-  { id: 4, name: "Local Aid Society", email: "support@localaid.org", submitted: "2 days ago", documents: 5, status: "pending" },
-]
-
-const recentUsers = [
-  { id: 1, name: "John Smith", email: "john@restaurant.com", role: "donor", joined: "10 min ago", verified: true },
-  { id: 2, name: "Sarah Johnson", email: "sarah@ngo.org", role: "receiver", joined: "25 min ago", verified: true },
-  { id: 3, name: "Mike Brown", email: "mike@cafe.com", role: "donor", joined: "1 hour ago", verified: false },
-  { id: 4, name: "Emily Davis", email: "emily@shelter.org", role: "receiver", joined: "2 hours ago", verified: true },
-  { id: 5, name: "Chris Wilson", email: "chris@market.com", role: "donor", joined: "3 hours ago", verified: false },
-]
-
-const recentReports = [
-  { id: 1, type: "Fake Donation", reporter: "Hope Shelter", reported: "Unknown User", status: "open", time: "30 min ago" },
-  { id: 2, type: "Spam Content", reporter: "City Mission", reported: "Spam Account", status: "investigating", time: "2 hours ago" },
-  { id: 3, type: "Quality Issue", reporter: "Food Bank", reported: "Bad Restaurant", status: "resolved", time: "1 day ago" },
-]
-
 export default function AdminDashboard() {
+  const { data: stats = [] } = useRemote('admin.stats', [])
+  const { data: pendingNGOs = [] } = useRemote('admin.pendingNGOs', [])
+  const { data: recentUsers = [] } = useRemote('admin.recentUsers', [])
+  const { data: recentReports = [] } = useRemote('admin.recentReports', [])
+
   const [activeTab, setActiveTab] = useState<"ngos" | "users" | "reports">("ngos")
 
   return (

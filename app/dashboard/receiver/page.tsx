@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { TodoList } from "@/components/ui/todo-list"
 import { Input } from "@/components/ui/input"
 import { 
   MapPin, 
@@ -15,97 +16,18 @@ import {
   Star,
   Heart
 } from "lucide-react"
-
-const stats = [
-  { label: "Nearby Donations", value: 23, icon: MapPin, color: "primary" },
-  { label: "My Requests", value: 5, icon: Package, color: "secondary" },
-  { label: "Approved Pickups", value: 3, icon: CheckCircle, color: "accent" },
-  { label: "Completed", value: 47, icon: Truck, color: "primary" },
-]
-
-const nearbyDonations = [
-  {
-    id: 1,
-    foodName: "Fresh Vegetable Mix",
-    donor: "Green Restaurant",
-    donorRating: 4.9,
-    quantity: "15 kg",
-    category: "Fresh Produce",
-    distance: "0.8 km",
-    expiresIn: "4 hours",
-    image: null,
-    verified: true,
-  },
-  {
-    id: 2,
-    foodName: "Bread & Pastries",
-    donor: "City Bakery",
-    donorRating: 4.7,
-    quantity: "25 items",
-    category: "Bakery Items",
-    distance: "1.2 km",
-    expiresIn: "6 hours",
-    image: null,
-    verified: true,
-  },
-  {
-    id: 3,
-    foodName: "Cooked Meals",
-    donor: "Hotel Grand",
-    donorRating: 5.0,
-    quantity: "40 portions",
-    category: "Cooked Meals",
-    distance: "1.5 km",
-    expiresIn: "3 hours",
-    image: null,
-    verified: true,
-  },
-  {
-    id: 4,
-    foodName: "Dairy Products",
-    donor: "Fresh Mart",
-    donorRating: 4.8,
-    quantity: "20 kg",
-    category: "Dairy",
-    distance: "2.1 km",
-    expiresIn: "8 hours",
-    image: null,
-    verified: false,
-  },
-  {
-    id: 5,
-    foodName: "Canned Goods",
-    donor: "Superstore",
-    donorRating: 4.6,
-    quantity: "50 items",
-    category: "Packaged Food",
-    distance: "2.8 km",
-    expiresIn: "48 hours",
-    image: null,
-    verified: true,
-  },
-  {
-    id: 6,
-    foodName: "Fresh Fruits",
-    donor: "Fruit Market",
-    donorRating: 4.9,
-    quantity: "30 kg",
-    category: "Fresh Produce",
-    distance: "3.2 km",
-    expiresIn: "12 hours",
-    image: null,
-    verified: true,
-  },
-]
-
-const categories = ["All", "Fresh Produce", "Cooked Meals", "Bakery Items", "Dairy", "Packaged Food"]
+import useRemote from "@/hooks/use-remote"
 
 export default function ReceiverDashboard() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  const { data: stats = [] } = useRemote('receiver.stats', [])
+  const { data: nearbyDonations = [] } = useRemote('receiver.nearbyDonations', [])
+  const { data: categories = [] } = useRemote('receiver.categories', [])
+
+  const [selectedCategory, setSelectedCategory] = useState(categories[0] || "All")
   const [searchQuery, setSearchQuery] = useState("")
   const [requestedIds, setRequestedIds] = useState<number[]>([])
 
-  const filteredDonations = nearbyDonations.filter(donation => {
+  const filteredDonations = nearbyDonations.filter((donation: any) => {
     const matchesCategory = selectedCategory === "All" || donation.category === selectedCategory
     const matchesSearch = donation.foodName.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          donation.donor.toLowerCase().includes(searchQuery.toLowerCase())
@@ -171,98 +93,31 @@ export default function ReceiverDashboard() {
                 {cat}
               </button>
             ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Donations Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredDonations.map((donation) => {
-          const isRequested = requestedIds.includes(donation.id)
-          
-          return (
-            <div key={donation.id} className="bento-card glass-card rounded-3xl overflow-hidden">
-              {/* Image */}
-              <div className="h-40 bg-muted flex items-center justify-center relative">
-                <Package className="h-12 w-12 text-muted-foreground" />
-                {/* Urgency Badge */}
-                {parseInt(donation.expiresIn) <= 4 && (
-                  <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
-                    Urgent
-                  </span>
-                )}
-                {/* Save Button */}
-                <button className="absolute top-3 right-3 p-2 rounded-full bg-background/50 backdrop-blur-sm hover:bg-background/80 transition-colors">
-                  <Heart className="h-4 w-4 text-muted-foreground" />
-                </button>
+      {/* Donations List + To-Do */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-4">
+          {filteredDonations.map((donation: any) => (
+            <div key={donation.id} className="flex flex-col gap-3 rounded-2xl border border-border/60 bg-muted/20 p-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="font-semibold text-foreground">{donation.foodName}</p>
+                <p className="text-sm text-muted-foreground">{donation.donor} • {donation.quantity} • {donation.category}</p>
               </div>
-
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <div>
-                    <h3 className="font-semibold text-foreground">{donation.foodName}</h3>
-                    <div className="flex items-center gap-1 mt-1">
-                      <span className="text-sm text-muted-foreground">{donation.donor}</span>
-                      {donation.verified && (
-                        <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 text-accent">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="text-sm font-medium">{donation.donorRating}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="inline-flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs text-muted-foreground">
-                    <Package className="h-3 w-3" />
-                    {donation.quantity}
-                  </span>
-                  <span className="inline-flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs text-muted-foreground">
-                    <MapPin className="h-3 w-3" />
-                    {donation.distance}
-                  </span>
-                  <span className="inline-flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    {donation.expiresIn}
-                  </span>
-                </div>
-
-                <Button 
-                  className={`w-full ${isRequested ? "bg-secondary hover:bg-secondary" : ""}`}
-                  onClick={() => handleRequest(donation.id)}
-                  disabled={isRequested}
-                >
-                  {isRequested ? (
-                    <>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Requested
-                    </>
-                  ) : (
-                    <>
-                      Request
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
+              <div className="flex items-center gap-3">
+                <div className="text-xs text-muted-foreground">{donation.distance} • {donation.expiresIn}</div>
+                <Button onClick={() => handleRequest(donation.id)} disabled={requestedIds.includes(donation.id)}>Request</Button>
               </div>
             </div>
-          )
-        })}
-      </div>
-
-      {/* Empty State */}
-      {filteredDonations.length === 0 && (
-        <div className="text-center py-12">
-          <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-foreground mb-2">No donations found</h3>
-          <p className="text-muted-foreground">Try adjusting your search or filters</p>
+          ))}
         </div>
-      )}
+
+        <div className="lg:col-span-1">
+          <TodoList title="Pickup Tasks" />
+        </div>
+      </div>
     </div>
   )
 }

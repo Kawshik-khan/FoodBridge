@@ -7,27 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Building2, Users, Shield } from "lucide-react"
-
-const roles = [
-  {
-    id: "donor",
-    label: "Donor",
-    description: "Restaurant, supermarket, or individual donating food",
-    icon: Building2,
-  },
-  {
-    id: "receiver",
-    label: "Receiver",
-    description: "NGO or verified individual receiving food",
-    icon: Users,
-  },
-  {
-    id: "admin",
-    label: "Admin",
-    description: "Platform administrator (requires approval)",
-    icon: Shield,
-  },
-]
+import useRemote from "@/hooks/use-remote"
 
 export function RegisterForm() {
   const router = useRouter()
@@ -42,6 +22,27 @@ export function RegisterForm() {
     password: "",
     role: defaultRole,
   })
+
+  const { data: roles = [
+    {
+      id: "donor",
+      label: "Donor",
+      description: "Restaurant, supermarket, or individual donating food",
+      icon: Building2,
+    },
+    {
+      id: "receiver",
+      label: "Receiver",
+      description: "NGO or verified individual receiving food",
+      icon: Users,
+    },
+    {
+      id: "admin",
+      label: "Admin",
+      description: "Platform administrator (requires approval)",
+      icon: Shield,
+    },
+  ] } = useRemote('auth.roles', [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -134,7 +135,7 @@ export function RegisterForm() {
                 <Label>I want to</Label>
                 <div className="grid gap-3">
                   {roles.map((role) => {
-                    const Icon = role.icon
+                    const Icon = role.icon || Building2
                     return (
                       <button
                         key={role.id}

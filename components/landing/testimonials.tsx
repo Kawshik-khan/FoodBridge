@@ -1,59 +1,11 @@
 "use client"
 
 import { Star, BadgeCheck } from "lucide-react"
-
-const testimonials = [
-  {
-    name: "Sarah Chen",
-    role: "Restaurant Owner",
-    avatar: "SC",
-    rating: 5,
-    verified: true,
-    content: "FoodBridge has transformed how we handle surplus food. Instead of throwing away perfectly good meals, we now help feed families in need. The pickup coordination is seamless.",
-  },
-  {
-    name: "Michael Rodriguez",
-    role: "NGO Director",
-    avatar: "MR",
-    rating: 5,
-    verified: true,
-    content: "As an NGO, finding reliable food sources was always a challenge. FoodBridge connects us with donors in real-time, and the GPS matching saves us hours every day.",
-  },
-  {
-    name: "Priya Patel",
-    role: "Supermarket Manager",
-    avatar: "PP",
-    rating: 5,
-    verified: true,
-    content: "We&apos;ve reduced our food waste by 85% since joining FoodBridge. The platform is incredibly easy to use, and knowing our surplus feeds people instead of landfills is amazing.",
-  },
-  {
-    name: "David Kim",
-    role: "Community Volunteer",
-    avatar: "DK",
-    rating: 5,
-    verified: true,
-    content: "I volunteer with local food banks and FoodBridge has been a game-changer. The notifications keep us informed, and the rating system ensures quality donations.",
-  },
-  {
-    name: "Emma Wilson",
-    role: "Catering Business",
-    avatar: "EW",
-    rating: 5,
-    verified: true,
-    content: "After every event, we have leftover food. FoodBridge makes it simple to donate within minutes. The live tracking gives us peace of mind that it reaches those in need.",
-  },
-  {
-    name: "James Thompson",
-    role: "Food Bank Coordinator",
-    avatar: "JT",
-    rating: 5,
-    verified: true,
-    content: "The admin dashboard gives us complete visibility into donations and pickups. FoodBridge&apos;s verification system ensures we only work with legitimate, quality sources.",
-  },
-]
+import useRemote from "@/hooks/use-remote"
 
 export function Testimonials() {
+  const { data: testimonials = [] } = useRemote('landing.testimonials', [])
+
   return (
     <section id="testimonials" className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -74,7 +26,7 @@ export function Testimonials() {
 
         {/* Testimonials Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial: any) => (
             <div
               key={testimonial.name}
               className="bento-card glass-card rounded-3xl p-6"
@@ -103,7 +55,7 @@ export function Testimonials() {
 
               {/* Rating */}
               <div className="mb-4 flex items-center gap-1">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                {Array.from({ length: testimonial.rating }).map((_: any, i: number) => (
                   <Star key={i} className="h-4 w-4 fill-accent text-accent" />
                 ))}
               </div>

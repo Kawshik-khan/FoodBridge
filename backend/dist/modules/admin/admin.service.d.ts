@@ -1,0 +1,158 @@
+import { PrismaService } from '../../common/prisma/prisma.service';
+export declare class AdminService {
+    private prisma;
+    constructor(prisma: PrismaService);
+    dashboard(): Promise<{
+        users: number;
+        donations: number;
+        requests: number;
+        pickups: number;
+        reports: number;
+    }>;
+    listUsers(): Promise<{
+        id: string;
+        createdAt: Date;
+        fullName: string;
+        email: string;
+        password: string;
+        phone: string | null;
+        role: string;
+        avatar: string | null;
+        verified: boolean;
+        isBanned: boolean;
+        trustScore: number;
+        address: string | null;
+        latitude: number | null;
+        longitude: number | null;
+    }[]>;
+    banUser(id: string, reason?: string): Promise<{
+        id: string;
+        createdAt: Date;
+        fullName: string;
+        email: string;
+        password: string;
+        phone: string | null;
+        role: string;
+        avatar: string | null;
+        verified: boolean;
+        isBanned: boolean;
+        trustScore: number;
+        address: string | null;
+        latitude: number | null;
+        longitude: number | null;
+    }>;
+    verifyUser(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        fullName: string;
+        email: string;
+        password: string;
+        phone: string | null;
+        role: string;
+        avatar: string | null;
+        verified: boolean;
+        isBanned: boolean;
+        trustScore: number;
+        address: string | null;
+        latitude: number | null;
+        longitude: number | null;
+    }>;
+    reportedDonations(): Promise<({
+        donor: {
+            id: string;
+            createdAt: Date;
+            fullName: string;
+            email: string;
+            password: string;
+            phone: string | null;
+            role: string;
+            avatar: string | null;
+            verified: boolean;
+            isBanned: boolean;
+            trustScore: number;
+            address: string | null;
+            latitude: number | null;
+            longitude: number | null;
+        };
+    } & {
+        id: string;
+        title: string;
+        createdAt: Date;
+        lat: number | null;
+        lng: number | null;
+        donorId: string;
+        description: string | null;
+        category: string | null;
+        quantity: number;
+        unit: string;
+        cooked: boolean;
+        expiryTime: Date | null;
+        pickupAddress: string | null;
+        status: string;
+        reportedCount: number;
+        availableFrom: Date | null;
+        availableTo: Date | null;
+    })[]>;
+    deleteDonation(id: string): Promise<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        lat: number | null;
+        lng: number | null;
+        donorId: string;
+        description: string | null;
+        category: string | null;
+        quantity: number;
+        unit: string;
+        cooked: boolean;
+        expiryTime: Date | null;
+        pickupAddress: string | null;
+        status: string;
+        reportedCount: number;
+        availableFrom: Date | null;
+        availableTo: Date | null;
+    }>;
+    reports(): Promise<({
+        donation: {
+            id: string;
+            title: string;
+            createdAt: Date;
+            lat: number | null;
+            lng: number | null;
+            donorId: string;
+            description: string | null;
+            category: string | null;
+            quantity: number;
+            unit: string;
+            cooked: boolean;
+            expiryTime: Date | null;
+            pickupAddress: string | null;
+            status: string;
+            reportedCount: number;
+            availableFrom: Date | null;
+            availableTo: Date | null;
+        };
+        reporter: {
+            id: string;
+            createdAt: Date;
+            fullName: string;
+            email: string;
+            password: string;
+            phone: string | null;
+            role: string;
+            avatar: string | null;
+            verified: boolean;
+            isBanned: boolean;
+            trustScore: number;
+            address: string | null;
+            latitude: number | null;
+            longitude: number | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        donationId: string | null;
+        reporterId: string;
+        reason: string;
+    })[]>;
+}

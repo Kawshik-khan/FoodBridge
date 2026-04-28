@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import useRemote from "@/hooks/use-remote"
 
 interface StatProps {
   value: number
@@ -54,14 +55,9 @@ function AnimatedStat({ value, suffix, label }: StatProps) {
   )
 }
 
-const stats = [
-  { value: 2500000, suffix: "+", label: "Meals Saved" },
-  { value: 850, suffix: "+", label: "Active NGOs" },
-  { value: 95, suffix: "%", label: "Waste Reduced" },
-  { value: 120, suffix: "+", label: "Cities Covered" },
-]
-
 export function Impact() {
+  const { data: stats = [] } = useRemote('landing.impact.stats', [])
+  
   return (
     <section id="impact" className="py-24 relative overflow-hidden">
       {/* Background */}

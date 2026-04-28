@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  // For local development we use a file-based SQLite DB. Set DATABASE_URL in .env
+  // Example: DATABASE_URL="file:./dev.db"
+  url      = env("DATABASE_URL")
+}
+
+// UUID primary keys, indexes, relations
+
+model User {
+  id        String    @id @default(uuid())
+  fullName  String
+  email     String    @unique
+  phone     String?   
+  password  String
+  role      String    @default("RECEIVER")
+  avatar    String?
+  verified  Boolean   @default(false)
+  isBanned  Boolean   @default(false)
+  trustScore Float    @default(0)
+  address   String?
+  latitude  Float?
+  longitude Float?
+  sessions  Session[]
+  donations Donation[]
+  requests  Request[] @relation("requester")
+  pickupsAsDonor Pickup[] @relation("pickupDonor")
+  pickupsAsReceiver Pickup[] @relation("pickupReceiver")
+  ratingsGiven Rating[] @relation("fromUser")
+  ratingsReceived Rating[] @relation("toUser")
+  notifications Notification[] @relation("userNotifications")
+  verificationTokens VerificationToken[] @relation("userVerificationTokens")
+  passwordResetTokens PasswordResetToken[] @relation("userPasswordResetTokens")
+  reports Report[] @relation("userReports")
+  createdAt DateTime  @default(now())
+
+  @@index([createdAt])
+}
+
+model Donation {
+  id           String   @id @default(uuid())
+  donor        User     @relation(fields: [donorId], references: [id])
+  donorId      String
+  title        String
+  description  String?
+  category     String?
+  quantity     Int
+  unit         String
+  cooked       Boolean
+  expiryTime   DateTime?
+  images       DonationImage[]
+  pickupAddress String?
+  lat          Float?
+  lng          Float?
+  status       String   @default("AVAILABLE")
+  reportedCount Int     @default(0)
+  availableFrom DateTime?
+  availableTo   DateTime?
+  requests     Request[]
+  pickup       Pickup?
+  reports      Report[] @relation("donationReports")
+  createdAt    DateTime @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([lat, lng])
+}
+
+model DonationImage {
+  id String @id @default(uuid())
+  url String
+  donation Donation @relation(fields: [donationId], references: [id])
+  donationId String
+}
+
+model Request {
+  id String @id @default(uuid())
+  donation Donation @relation(fields: [donationId], references: [id])
+  donationId String
+  requester User @relation("requester", fields: [requesterId], references: [id])
+  requesterId String
+  note String?
+  status String @default("PENDING")
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Pickup {
+  id String @id @default(uuid())
+  donation Donation @relation(fields: [donationId], references: [id])
+  donationId String @unique
+  donor User @relation("pickupDonor", fields: [donorId], references: [id])
+  donorId String
+  receiver User @relation("pickupReceiver", fields: [receiverId], references: [id])
+  receiverId String
+  pickupTime DateTime
+  otpCode String
+  status String @default("SCHEDULED")
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([pickupTime])
+}
+
+model Rating {
+  id String @id @default(uuid())
+  fromUser User @relation("fromUser", fields: [fromUserId], references: [id])
+  fromUserId String
+  toUser User @relation("toUser", fields: [toUserId], references: [id])
+  toUserId String
+  stars Int
+  comment String?
+  createdAt DateTime @default(now())
+
+  @@index([fromUserId])
+  @@index([toUserId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id String @id @default(uuid())
+  user User @relation("userNotifications", fields: [userId], references: [id])
+  userId String
+  title String
+  body String
+  data String?
+  read Boolean @default(false)
+  channel String @default("IN_APP")
+  createdAt DateTime @default(now())
+}
+
+model Session {
+  id String @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  refreshToken String
+  deviceInfo String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model VerificationToken {
+  id String @id @default(uuid())
+  user User @relation("userVerificationTokens", fields: [userId], references: [id])
+  userId String
+  token String
+  expiresAt DateTime
+}
+
+model PasswordResetToken {
+  id String @id @default(uuid())
+  user User @relation("userPasswordResetTokens", fields: [userId], references: [id])
+  userId String
+  token String
+  expiresAt DateTime
+}
+
+model Report {
+  id String @id @default(uuid())
+  reporter User @relation("userReports", fields: [reporterId], references: [id])
+  reporterId String
+  donation Donation? @relation("donationReports", fields: [donationId], references: [id])
+  donationId String?
+  reason String
+  createdAt DateTime @default(now())
+}

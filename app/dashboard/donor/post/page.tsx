@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import useRemote from "@/hooks/use-remote"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,22 +18,10 @@ import {
   Image as ImageIcon
 } from "lucide-react"
 
-const categories = [
-  { id: "cooked", label: "Cooked Meals", icon: "🍲" },
-  { id: "fresh", label: "Fresh Produce", icon: "🥗" },
-  { id: "bakery", label: "Bakery Items", icon: "🍞" },
-  { id: "dairy", label: "Dairy Products", icon: "🥛" },
-  { id: "packaged", label: "Packaged Food", icon: "📦" },
-  { id: "beverages", label: "Beverages", icon: "🧃" },
-]
-
-const steps = [
-  { id: 1, label: "Food Details" },
-  { id: 2, label: "Location & Time" },
-  { id: 3, label: "Review" },
-]
-
 export default function PostDonationPage() {
+  const { data: categories = [] } = useRemote('post.categories', [])
+  const { data: steps = [] } = useRemote('post.steps', [])
+  
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
